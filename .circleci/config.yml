@@ -44,7 +44,7 @@ jobs:
           name: Convert sfdx source into mpadi format
           command: |
             #Convert sfdx source
-            sfdx force:source:convert -r force-app -d /deploy
+            sudo sfdx force:source:convert -r force-app -d /deploy
       - run:
           name: Deploy to Target Deployment Org
           command: |
