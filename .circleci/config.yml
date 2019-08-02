@@ -21,7 +21,7 @@ jobs:
             wget -qO- $DX_CLI_URL | tar xJ -C sfdx --strip-components 1
             # Install the cli
             ./sfdx/install
-            sfdx
+            sudo sfdx
       - run:
           name: Decrypt server key & Authorize Target Deployment Org
           command: |
@@ -36,7 +36,7 @@ jobs:
           command: |
             #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
             #sfdx force:source:deploy -p force-app/main/default/ -u $USER_NAME
-            ./deploy.sh
+            .scripts/deploy.sh
             ##Convert & deploy as mdapi - this is a longer deployment, should be used for prod deployments, as it is more stable. Can be tracked through "Deployment Status" in the target org.
             #sudo sfdx force:source:convert -r force-app -d /deploy
             #sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername UAT --testlevel $TESTLEVEL
