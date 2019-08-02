@@ -2,8 +2,24 @@ version: 2
 jobs:
   build:
     branches:
-        only:
+      only:
         - master
+    docker:
+      - image: circlci/node:8.9.4
+    environment:
+      # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
+      # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
+
+      # Variables used in build steps
+      - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+      - TESTLEVEL: NoTestRun
+    steps:
+      - run:
+          echo "Not doing anything - this is master!"
+  build:
+    branches:
+      only:
+        - thomTarget
     docker:
       - image: circleci/node:8.9.4
     environment:
