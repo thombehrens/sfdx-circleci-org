@@ -28,7 +28,7 @@ jobs:
             # Decrypt Server Key
             openssl enc -nosalt -aes-256-cbc -d -in assets/server.key.enc -out assets/server.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
       - run:
-          name: Run Script: Authorize and Deploy to Target Deployment Org
+          name: Run Script - Authorize and Deploy to Target Deployment Org
           command: |
             # Run script stored in repository
             ./scripts/deploy.sh
