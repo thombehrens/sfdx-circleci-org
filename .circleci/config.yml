@@ -1,61 +1,64 @@
 version: 2
-jobs:
-  mdapi-build:
-    branches:
-      only:
-        - master
-    docker:
-      - image: circlci/node:8.9.4
-    environment:
-      # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
-      # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
+mdapi-job:
+  jobs:
+    build:
+      branches:
+        only:
+          - master
+      docker:
+        - image: circlci/node:8.9.4
+      environment:
+        # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
+        # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
 
-      # Variables used in build steps
-      - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-      - TESTLEVEL: NoTestRun
-    steps:
-      - run:
-          echo "Not doing anything - this is master!"
-  sfdx-build:
-    branches:
-      only:
-        - thomTarget
-    docker:
-      - image: circleci/node:8.9.4
-    environment:
-      # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
-      # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
+        # Variables used in build steps
+        - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+        - TESTLEVEL: NoTestRun
+      steps:
+        - run:
+            echo "Not doing anything - this is master!"
+sfdx-build:
+  jobs:
+    build:
+      branches:
+        only:
+          - thomTarget
+      docker:
+        - image: circleci/node:8.9.4
+      environment:
+        # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
+        # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
 
-      # Variables used in build steps
-      - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-      - TESTLEVEL: NoTestRun
-    steps:
-      - checkout
-      - run:
-          name: "Create SFDX Folder & Download & Install CLI"
-          command: |
-            # Create sfdx directory
-            mkdir sfdx
-            # Download cli
-            wget -qO- $DX_CLI_URL | tar xJ -C sfdx --strip-components 1
-            # Install the cli
-            ./sfdx/install
-            sfdx
-      - run:
-          name: Decrypt server key & Authorize Target Deployment Org
-          command: |
-            #Decrypt server key
-            openssl enc -nosalt -aes-256-cbc -d -in assets/server.key.enc -out assets/server.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
-            # Set Audience - https://salesforce.stackexchange.com/a/253940
-            export SFDX_AUDIENCE_URL=https://test.salesforce.com
-            #Authorize target org
-            sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid $CONSUMER_KEY --jwtkeyfile assets/server.key --username $USER_NAME --setalias UAT
-      - run:
-          name: Deploy to Target Deployment Org
-          command: |
-            #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
-            sfdx force:source:deploy -p force-app/main/default/ -u $USER_NAME
+        # Variables used in build steps
+        - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+        - TESTLEVEL: NoTestRun
+      steps:
+        - checkout
+        - run:
+            name: "Create SFDX Folder & Download & Install CLI"
+            command: |
+              # Create sfdx directory
+              mkdir sfdx
+              # Download cli
+              wget -qO- $DX_CLI_URL | tar xJ -C sfdx --strip-components 1
+              # Install the cli
+              ./sfdx/install
+              sfdx
+        - run:
+            name: Decrypt server key & Authorize Target Deployment Org
+            command: |
+              #Decrypt server key
+              openssl enc -nosalt -aes-256-cbc -d -in assets/server.key.enc -out assets/server.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
+              # Set Audience - https://salesforce.stackexchange.com/a/253940
+              export SFDX_AUDIENCE_URL=https://test.salesforce.com
+              #Authorize target org
+              sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid $CONSUMER_KEY --jwtkeyfile assets/server.key --username $USER_NAME --setalias UAT
+        - run:
+            name: Deploy to Target Deployment Org
+            command: |
+              #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
+              sfdx force:source:deploy -p force-app/main/default/ -u $USER_NAME
 
-            ##Convert & deploy as mdapi - this is a longer deployment, should be used for prod deployments, as it is more stable. Can be tracked through "Deployment Status" in the target org.
-            #sudo sfdx force:source:convert -r force-app -d /deploy
-            #sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername UAT --testlevel $TESTLEVEL
+              ##Convert & deploy as mdapi - this is a longer deployment, should be used for prod deployments, as it is more stable. Can be tracked through "Deployment Status" in the target org.
+              #sudo sfdx force:source:convert -r force-app -d /deploy
+              #sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername UAT --testlevel $TESTLEVEL
