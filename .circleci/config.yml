@@ -2,7 +2,8 @@ version: 2
 jobs:
   build:
     branches:
-      - master
+        only:
+        - master
     docker:
       - image: circleci/node:8.9.4
     environment:
