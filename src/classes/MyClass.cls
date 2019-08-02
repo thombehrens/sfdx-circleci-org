@@ -1,6 +1,6 @@
 public with sharing class MyClass {
 	public MyClass() {
-
+		// non-consequential change
 	}
 
 	public String getAppVersion() {
