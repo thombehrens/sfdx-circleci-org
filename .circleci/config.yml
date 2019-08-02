@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  mdapi-build:
     branches:
       only:
         - master
@@ -16,7 +16,7 @@ jobs:
     steps:
       - run:
           echo "Not doing anything - this is master!"
-  build:
+  sfdx-build:
     branches:
       only:
         - thomTarget
