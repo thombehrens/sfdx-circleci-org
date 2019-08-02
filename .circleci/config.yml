@@ -41,15 +41,14 @@ jobs:
             export SFDX_AUDIENCE_URL=https://test.salesforce.com
             sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid $CONSUMER_KEY --jwtkeyfile assets/server.key --username $USER_NAME --setalias UAT
       - run:
-          name: Convert sfdx source into mpadi format
-          command: |
-            #Convert sfdx source
-            sudo sfdx force:source:convert -r force-app -d /deploy
-      - run:
           name: Deploy to Target Deployment Org
           command: |
+            #Deploy as sfdx source
+            sfdx force:source:deploy -p force-app/main/default/ -u $USER_NAME
+            #Convert sfdx source
+            #sudo sfdx force:source:convert -r force-app -d /deploy
             #Deploy to target deployment org via mdapi and run unit tests.
-            sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername UAT --testlevel $TESTLEVEL
+            #sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername UAT --testlevel $TESTLEVEL
 
             #Example shows how to run a check only deploy.
             #sfdx force:mdapi:deploy --checkonly --wait 10 --deploydir $DEPLOYDIR --targetusername UAT --testlevel $TESTLEVEL
