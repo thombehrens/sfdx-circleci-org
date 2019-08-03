@@ -1,6 +1,10 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - thomSource
+        - thomTarget
     docker:
       - image: circleci/node:8.9.4
     environment:
