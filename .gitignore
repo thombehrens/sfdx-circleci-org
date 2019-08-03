@@ -32,3 +32,6 @@ $RECYCLE.BIN/
 
 # Authentication Data
 scripts/server*
+
+
+scratch.sh
