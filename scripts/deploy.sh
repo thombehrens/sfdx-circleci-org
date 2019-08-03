@@ -8,10 +8,10 @@ export SFDX_AUDIENCE_URL=https://test.salesforce.com
 # Consumer Key variable must be named DEV_INT_CONSUMER_KEY and
 # Username variable must be named DEV_INT_USER_NAME
 
-sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid ${!$CIRCLE_BRANCH\_CONSUMER_KEY} --jwtkeyfile assets/server.key --username ${!$CIRCLE_BRANCH\_USER_NAME} --setalias DEPLOYMENT_ORG
+sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid ${$CIRCLE_BRANCH\_CONSUMER_KEY} --jwtkeyfile assets/server.key --username ${$CIRCLE_BRANCH\_USER_NAME} --setalias DEPLOYMENT_ORG
 
 #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
-sfdx force:source:deploy -p force-app/main/default/ -u ${!$CIRCLE_BRANCH\_USER_NAME}
+sfdx force:source:deploy -p force-app/main/default/ -u ${$CIRCLE_BRANCH\_USER_NAME}
 
 ##Convert & deploy as mdapi - this is a longer deployment, should be used for prod deployments, as it is more stable. Can be tracked through "Deployment Status" in the target org.
 #sudo sfdx force:source:convert -r force-app -d /deploy
