@@ -2,7 +2,9 @@
 
 # Set Audience - https://salesforce.stackexchange.com/a/253940
 export SFDX_AUDIENCE_URL=https://test.salesforce.com
+
 #Authorize target org
+
 sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid $CONSUMER_KEY --jwtkeyfile assets/server.key --username $USER_NAME --setalias UAT
 
 #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
