@@ -8,8 +8,8 @@ export SFDX_AUDIENCE_URL=https://test.salesforce.com
 # Consumer Key variable must be named DEV_INT_CONSUMER_KEY and
 # Username variable must be named DEV_INT_USER_NAME
 
-CONSUMER_KEY = $CIRCLE_BRANCH\_CONSUMER_KEY
-USER_NAME = $CIRCLE_BRANCH\_USER_NAME
+CONSUMER_KEY=$CIRCLE_BRANCH\_CONSUMER_KEY
+USER_NAME=$CIRCLE_BRANCH\_USER_NAME
 
 sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid $CONSUMER_KEY --jwtkeyfile assets/server.key --username $USER_NAME --setalias DEPLOYMENT_ORG
 
