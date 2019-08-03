@@ -6,5 +6,5 @@
     "**/.sfdx": true
   },
   "workbench.colorCustomizations": {},
-  "eslint.nodePath": "/Users/thom/.vscode-insiders/extensions/salesforce.salesforcedx-vscode-lwc-46.7.0/node_modules"
+  "eslint.nodePath": "/Users/thom/.vscode-insiders/extensions/salesforce.salesforcedx-vscode-lwc-46.8.0/node_modules"
 }
