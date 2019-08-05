@@ -13,7 +13,7 @@ jobs:
 
       # Variables used in build steps
       - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-      - TESTLEVEL: NoTestRun
+      - TESTLEVEL: RunLocalTests
     steps:
       - checkout
       - run:
