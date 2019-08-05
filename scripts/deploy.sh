@@ -19,12 +19,10 @@ sfdx force:auth:jwt:grant --instanceurl $ENDPOINT  --clientid ${!CONSUMER_KEY} -
 mdapi_branches=("thomTarget")
 
 if [[ " ${mdapi_branches[@]} " =~ " ${CIRCLE_BRANCH} " ]]; then
-  echo "mdapi"
   ##Convert & deploy as mdapi - this is a longer deployment, should be used for prod deployments, as it is more stable. Can be tracked through "Deployment Status" in the target org.
   sudo sfdx force:source:convert -r force-app -d /deploy
   sfdx force:mdapi:deploy --wait 10 --deploydir /deploy --targetusername DEPLOYMENT_ORG --testlevel $TESTLEVEL
 else
-  echo "sfdx"
   #Deploy as sfdx source - this is a quicker deployment that should be used for non-production orgs
   sfdx force:source:deploy -p force-app/main/default/ -u DEPLOYMENT_ORG
 fi
