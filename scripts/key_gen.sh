@@ -1,5 +1,5 @@
 #!/bin/bash
-rm server*
+
 echo Enter a random passphrase as a temporary password
 read password
 
